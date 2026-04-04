@@ -1,0 +1,14 @@
+[package]
+name = "lingua"
+version = "0.1.0"
+edition = "2024"
+authors = ["Kochka <kochka@gmail.com>"]
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+magnus = { version = "0.8.2" }
+lingua = "1.8.0"

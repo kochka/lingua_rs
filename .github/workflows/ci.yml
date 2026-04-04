@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Ruby ${{ matrix.ruby }}
+    strategy:
+      matrix:
+        ruby:
+          - "3.2"
+          - "3.4"
+          - "4.0"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install libclang
+        run: sudo apt-get update && sudo apt-get install -y libclang-dev
+      - name: Set up Ruby & Rust
+        uses: oxidize-rb/actions/setup-ruby-and-rust@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          cargo-cache: true
+      - name: Rust tests
+        run: cargo test --manifest-path ext/lingua/Cargo.toml
+      - name: Compile and test
+        run: bundle exec rake compile test
+      - name: Lint
+        run: bundle exec rake rubocop

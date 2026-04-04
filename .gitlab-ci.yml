@@ -1,0 +1,21 @@
+variables:
+  LIBCLANG_PATH: /usr/lib/llvm-13/lib
+  CARGO_BUILD_JOBS: "1"
+  RB_SYS_CARGO_PROFILE: dev
+
+before_script:
+  - gem install bundler --no-document
+  - bundle config set --local deployment 'true'
+  - bundle install --jobs $(nproc) "${FLAGS[@]}"
+
+test:
+  script:
+    - bundle exec rake compile test
+
+lint:
+  script:
+    - bundle exec rubocop
+
+rust_test:
+  script:
+    - cargo test --manifest-path ext/lingua/Cargo.toml --target-dir target
