@@ -3,7 +3,7 @@
 [![CI](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml/badge.svg)](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml)
 [![Gem Version](https://badge.fury.io/rb/lingua_rs.svg)](https://badge.fury.io/rb/lingua_rs)
 [![Downloads](https://img.shields.io/gem/dt/lingua_rs)](https://rubygems.org/gems/lingua_rs)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A Ruby gem wrapping the [Lingua](https://github.com/pemistahl/lingua-rs) Rust library for language detection.
 
@@ -147,6 +147,10 @@ Returned by `confidence_values`.
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake compile` to build the native extension and `rake test` to run the tests.
+
+## Acknowledgements
+
+This gem is built on top of [Lingua](https://github.com/pemistahl/lingua-rs) by [Peter M. Stahl](https://github.com/pemistahl), a highly accurate natural language detection library written in Rust.
 
 ## License
 
