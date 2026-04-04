@@ -1,5 +1,10 @@
 # LinguaRs
 
+[![CI](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml/badge.svg)](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/lingua_rs.svg)](https://badge.fury.io/rb/lingua_rs)
+[![Downloads](https://img.shields.io/gem/dt/lingua_rs)](https://rubygems.org/gems/lingua_rs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Ruby gem wrapping the [Lingua](https://github.com/pemistahl/lingua-rs) Rust library for language detection.
 
 ## Installation
@@ -104,7 +109,7 @@ detector.detect('Hello world')        # => #<Lingua::Language English>
 
 ```ruby
 detector.confidence('Bonjour le monde', :fr)  # => 0.8217
-Lingua.confidence('Bonjour le monde', 'fr')   # => 0.3794
+Lingua.confidence('Bonjour le monde', 'fr')   # => 0.8217
 
 results = detector.confidence_values('Bonjour le monde')
 results.first.language   # => #<Lingua::Language French>
