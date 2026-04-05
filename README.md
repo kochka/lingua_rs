@@ -249,6 +249,10 @@ LINGUA_LANGUAGES=east_asia,english bundle install
 
 Language and bundle names must match the Cargo features defined by this gem (lowercase, e.g. `french`, `english`, `german`, `core`, `europe_common`).
 
+Supported languages (from [Lingua Rust's official list](https://github.com/pemistahl/lingua-rs?tab=readme-ov-file#3-which-languages-are-supported)):
+
+`afrikaans`, `albanian`, `arabic`, `armenian`, `azerbaijani`, `basque`, `belarusian`, `bengali`, `bokmal`, `bosnian`, `bulgarian`, `catalan`, `chinese`, `croatian`, `czech`, `danish`, `dutch`, `english`, `esperanto`, `estonian`, `finnish`, `french`, `ganda`, `georgian`, `german`, `greek`, `gujarati`, `hebrew`, `hindi`, `hungarian`, `icelandic`, `indonesian`, `irish`, `italian`, `japanese`, `kazakh`, `korean`, `latin`, `latvian`, `lithuanian`, `macedonian`, `malay`, `maori`, `marathi`, `mongolian`, `nynorsk`, `persian`, `polish`, `portuguese`, `punjabi`, `romanian`, `russian`, `serbian`, `shona`, `slovak`, `slovene`, `somali`, `sotho`, `spanish`, `swahili`, `swedish`, `tagalog`, `tamil`, `telugu`, `thai`, `tsonga`, `tswana`, `turkish`, `ukrainian`, `urdu`, `vietnamese`, `welsh`, `xhosa`, `yoruba`, `zulu`
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake compile` to build the native extension and `rake test` to run the tests.
