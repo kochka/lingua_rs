@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0
+## 0.4.1
 
 - Add language predicate methods (`lang.french?`, `lang.fr?`, `lang.fra?`)
 - Add `iso_code` alias for `to_iso6391`

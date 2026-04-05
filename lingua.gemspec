@@ -29,13 +29,14 @@ Gem::Specification.new do |spec|
   spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
       (f == gemspec) ||
+        %w[Cargo.toml Cargo.lock].include?(f) ||
         f.start_with?(*%w[bin/ test/ spec/ features/ .git .github/ .gitlab-ci.yml .rubocop Gemfile CHANGELOG])
     end
   end
   spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  spec.extensions = ['ext/lingua/Cargo.toml']
+  spec.extensions = ['ext/lingua/extconf.rb']
 
   spec.add_dependency 'rb_sys', '~> 0.9.126'
   spec.add_development_dependency 'rake-compiler', '~> 1.3.0'

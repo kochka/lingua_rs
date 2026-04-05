@@ -221,6 +221,12 @@ LINGUA_LANGUAGES=core bundle install
 
 This compiles only the selected language models (~29 MB for the `core` bundle). You can use individual language names or predefined bundles, and you can mix both in the same build.
 
+This also works with `gem install`, for example:
+
+```bash
+LINGUA_LANGUAGES=french,english,german gem install lingua_rs
+```
+
 Available bundles:
 
 | Bundle | Languages |
