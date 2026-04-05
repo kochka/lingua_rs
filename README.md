@@ -1,9 +1,9 @@
 # LinguaRs
 
 [![CI](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml/badge.svg)](https://github.com/kochka/lingua_rs/actions/workflows/ci.yml)
-[![Gem Version](https://badge.fury.io/rb/lingua_rs.svg)](https://badge.fury.io/rb/lingua_rs)
-[![Downloads](https://img.shields.io/gem/dt/lingua_rs)](https://rubygems.org/gems/lingua_rs)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Gem Version](https://img.shields.io/gem/v/lingua_rs?color=cc342d)](https://rubygems.org/gems/lingua_rs)
+[![Downloads](https://img.shields.io/gem/dt/lingua_rs?color=0969da)](https://rubygems.org/gems/lingua_rs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-6e7781.svg)](https://opensource.org/licenses/MIT)
 
 A Ruby gem wrapping the [Lingua](https://github.com/pemistahl/lingua-rs) Rust library for language detection.
 
