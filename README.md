@@ -224,13 +224,15 @@ This compiles only the selected language models (~18 MB for 3 languages). You ca
 
 Available bundles:
 
-- `core`: `english`, `french`, `german`, `spanish`, `italian`, `portuguese`
-- `europe_common`: `core` + `dutch`, `polish`, `russian`, `turkish`
-- `americas`: `english`, `spanish`, `portuguese`, `french`
-- `mena`: `arabic`, `turkish`, `persian`, `hebrew`
-- `south_asia`: `hindi`, `urdu`, `bengali`, `tamil`, `telugu`, `punjabi`, `marathi`, `gujarati`
-- `east_asia`: `chinese`, `japanese`, `korean`, `vietnamese`, `thai`
-- `africa_common`: `arabic`, `english`, `french`, `swahili`, `somali`, `yoruba`, `zulu`
+| Bundle | Languages |
+| --- | --- |
+| `core` | `english`, `french`, `german`, `spanish`, `italian`, `portuguese` |
+| `europe_common` | `core` + `dutch`, `polish`, `russian`, `turkish` |
+| `americas` | `english`, `spanish`, `portuguese`, `french` |
+| `mena` | `arabic`, `turkish`, `persian`, `hebrew` |
+| `south_asia` | `hindi`, `urdu`, `bengali`, `tamil`, `telugu`, `punjabi`, `marathi`, `gujarati` |
+| `east_asia` | `chinese`, `japanese`, `korean`, `vietnamese`, `thai` |
+| `africa_common` | `arabic`, `english`, `french`, `swahili`, `somali`, `yoruba`, `zulu` |
 
 Examples:
 
