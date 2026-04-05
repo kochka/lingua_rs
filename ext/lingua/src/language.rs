@@ -12,37 +12,37 @@ impl WrappedLanguage {
         Ok(crate::helpers::parse_language(&input).map(WrappedLanguage))
     }
 
-    pub fn all() -> RArray {
+    pub fn all() -> Result<RArray, Error> {
         let ruby = Ruby::get().unwrap();
         let mut langs: Vec<Language> = Language::all().into_iter().collect();
         langs.sort_by(|a, b| a.to_string().cmp(&b.to_string()));
         let array = ruby.ary_new_capa(langs.len());
         for lang in langs {
-            let _ = array.push(WrappedLanguage(lang));
+            array.push(WrappedLanguage(lang))?;
         }
-        array
+        Ok(array)
     }
 
-    pub fn names() -> RArray {
+    pub fn names() -> Result<RArray, Error> {
         let ruby = Ruby::get().unwrap();
         let mut langs: Vec<Language> = Language::all().into_iter().collect();
         langs.sort_by(|a, b| a.to_string().cmp(&b.to_string()));
         let array = ruby.ary_new_capa(langs.len());
         for lang in langs {
-            let _ = array.push(lang.to_string());
+            array.push(lang.to_string())?;
         }
-        array
+        Ok(array)
     }
 
-    pub fn iso_codes() -> RArray {
+    pub fn iso_codes() -> Result<RArray, Error> {
         let ruby = Ruby::get().unwrap();
         let mut langs: Vec<Language> = Language::all().into_iter().collect();
         langs.sort_by(|a, b| a.to_string().cmp(&b.to_string()));
         let array = ruby.ary_new_capa(langs.len());
         for lang in langs {
-            let _ = array.push(lang.iso_code_639_1().to_string());
+            array.push(lang.iso_code_639_1().to_string())?;
         }
-        array
+        Ok(array)
     }
 
     pub fn name(&self) -> String {
