@@ -12,6 +12,7 @@
 *.a
 mkmf.log
 *.gem
+Cargo.lock
 target/
 .mise.toml
 .ruby-version

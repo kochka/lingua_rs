@@ -212,6 +212,36 @@ rescue ArgumentError => e
 end
 ```
 
+## Optimization: selecting languages
+
+By default, all 75 languages are compiled into the native extension (~278 MB). If you only need a subset, set the `LINGUA_LANGUAGES` environment variable before installing to reduce binary size and improve detection speed:
+
+```bash
+LINGUA_LANGUAGES=french,english,german bundle install
+```
+
+This compiles only the selected language models (~18 MB for 3 languages). You can use individual language names or predefined bundles, and you can mix both in the same build.
+
+Available bundles:
+
+- `core`: `english`, `french`, `german`, `spanish`, `italian`, `portuguese`
+- `europe_common`: `core` + `dutch`, `polish`, `russian`, `turkish`
+- `americas`: `english`, `spanish`, `portuguese`, `french`
+- `mena`: `arabic`, `turkish`, `persian`, `hebrew`
+- `south_asia`: `hindi`, `urdu`, `bengali`, `tamil`, `telugu`, `punjabi`, `marathi`, `gujarati`
+- `east_asia`: `chinese`, `japanese`, `korean`, `vietnamese`, `thai`
+- `africa_common`: `arabic`, `english`, `french`, `swahili`, `somali`, `yoruba`, `zulu`
+
+Examples:
+
+```bash
+LINGUA_LANGUAGES=core bundle install
+LINGUA_LANGUAGES=europe_common,polish bundle install
+LINGUA_LANGUAGES=east_asia,english bundle install
+```
+
+Language and bundle names must match the Cargo features defined by this gem (lowercase, e.g. `french`, `english`, `german`, `core`, `europe_common`).
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake compile` to build the native extension and `rake test` to run the tests.

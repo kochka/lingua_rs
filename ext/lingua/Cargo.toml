@@ -11,4 +11,187 @@ crate-type = ["cdylib"]
 
 [dependencies]
 magnus = { version = "0.8.2" }
-lingua = "1.8.0"
+lingua = { version = "1.8.0", default-features = false }
+
+[features]
+default = ["full"]
+full = [
+  "europe_common",
+  "americas",
+  "mena",
+  "south_asia",
+  "east_asia",
+  "africa_common",
+  "afrikaans",
+  "albanian",
+  "armenian",
+  "azerbaijani",
+  "basque",
+  "belarusian",
+  "bokmal",
+  "bosnian",
+  "bulgarian",
+  "catalan",
+  "croatian",
+  "czech",
+  "danish",
+  "esperanto",
+  "estonian",
+  "finnish",
+  "ganda",
+  "georgian",
+  "greek",
+  "hungarian",
+  "icelandic",
+  "indonesian",
+  "irish",
+  "kazakh",
+  "latin",
+  "latvian",
+  "lithuanian",
+  "macedonian",
+  "malay",
+  "maori",
+  "mongolian",
+  "nynorsk",
+  "romanian",
+  "serbian",
+  "shona",
+  "slovak",
+  "slovene",
+  "sotho",
+  "swedish",
+  "tagalog",
+  "tsonga",
+  "tswana",
+  "welsh",
+  "xhosa",
+]
+core = [
+  "english",
+  "french",
+  "german",
+  "spanish",
+  "italian",
+  "portuguese",
+]
+europe_common = [
+  "core",
+  "dutch",
+  "polish",
+  "russian",
+  "turkish",
+]
+americas = [
+  "english",
+  "spanish",
+  "portuguese",
+  "french",
+]
+mena = [
+  "arabic",
+  "turkish",
+  "persian",
+  "hebrew",
+]
+south_asia = [
+  "hindi",
+  "urdu",
+  "bengali",
+  "tamil",
+  "telugu",
+  "punjabi",
+  "marathi",
+  "gujarati",
+]
+east_asia = [
+  "chinese",
+  "japanese",
+  "korean",
+  "vietnamese",
+  "thai",
+]
+africa_common = [
+  "arabic",
+  "english",
+  "french",
+  "swahili",
+  "somali",
+  "yoruba",
+  "zulu",
+]
+afrikaans = ["lingua/afrikaans"]
+albanian = ["lingua/albanian"]
+arabic = ["lingua/arabic"]
+armenian = ["lingua/armenian"]
+azerbaijani = ["lingua/azerbaijani"]
+basque = ["lingua/basque"]
+belarusian = ["lingua/belarusian"]
+bengali = ["lingua/bengali"]
+bokmal = ["lingua/bokmal"]
+bosnian = ["lingua/bosnian"]
+bulgarian = ["lingua/bulgarian"]
+catalan = ["lingua/catalan"]
+chinese = ["lingua/chinese"]
+croatian = ["lingua/croatian"]
+czech = ["lingua/czech"]
+danish = ["lingua/danish"]
+dutch = ["lingua/dutch"]
+english = ["lingua/english"]
+esperanto = ["lingua/esperanto"]
+estonian = ["lingua/estonian"]
+finnish = ["lingua/finnish"]
+french = ["lingua/french"]
+ganda = ["lingua/ganda"]
+georgian = ["lingua/georgian"]
+german = ["lingua/german"]
+greek = ["lingua/greek"]
+gujarati = ["lingua/gujarati"]
+hebrew = ["lingua/hebrew"]
+hindi = ["lingua/hindi"]
+hungarian = ["lingua/hungarian"]
+icelandic = ["lingua/icelandic"]
+indonesian = ["lingua/indonesian"]
+irish = ["lingua/irish"]
+italian = ["lingua/italian"]
+japanese = ["lingua/japanese"]
+kazakh = ["lingua/kazakh"]
+korean = ["lingua/korean"]
+latin = ["lingua/latin"]
+latvian = ["lingua/latvian"]
+lithuanian = ["lingua/lithuanian"]
+macedonian = ["lingua/macedonian"]
+malay = ["lingua/malay"]
+maori = ["lingua/maori"]
+marathi = ["lingua/marathi"]
+mongolian = ["lingua/mongolian"]
+nynorsk = ["lingua/nynorsk"]
+persian = ["lingua/persian"]
+polish = ["lingua/polish"]
+portuguese = ["lingua/portuguese"]
+punjabi = ["lingua/punjabi"]
+romanian = ["lingua/romanian"]
+russian = ["lingua/russian"]
+serbian = ["lingua/serbian"]
+shona = ["lingua/shona"]
+slovak = ["lingua/slovak"]
+slovene = ["lingua/slovene"]
+somali = ["lingua/somali"]
+sotho = ["lingua/sotho"]
+spanish = ["lingua/spanish"]
+swahili = ["lingua/swahili"]
+swedish = ["lingua/swedish"]
+tagalog = ["lingua/tagalog"]
+tamil = ["lingua/tamil"]
+telugu = ["lingua/telugu"]
+thai = ["lingua/thai"]
+tsonga = ["lingua/tsonga"]
+tswana = ["lingua/tswana"]
+turkish = ["lingua/turkish"]
+ukrainian = ["lingua/ukrainian"]
+urdu = ["lingua/urdu"]
+vietnamese = ["lingua/vietnamese"]
+welsh = ["lingua/welsh"]
+xhosa = ["lingua/xhosa"]
+yoruba = ["lingua/yoruba"]
+zulu = ["lingua/zulu"]
