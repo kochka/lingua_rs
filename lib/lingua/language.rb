@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Lingua
+  # Represents a language returned by Lingua detection and lookup APIs.
   class Language
     private
 

@@ -377,6 +377,13 @@ class TestLanguage < Minitest::Test
   def test_lookup_by_iso6391_symbol
     assert_equal 'French', Lingua::Language[:fr].to_s
   end
+end
+
+class TestLanguageCollections < Minitest::Test
+  def setup
+    @french = Lingua.detect('Bonjour le monde')
+    @english = Lingua.detect('Hello world, this is a test')
+  end
 
   def test_lookup_by_iso6393
     assert_equal 'French', Lingua::Language['fra'].to_s
