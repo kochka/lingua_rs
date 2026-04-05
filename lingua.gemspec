@@ -16,9 +16,12 @@ Gem::Specification.new do |spec|
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.2.0'
 
-  spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/kochka/lingua_rs'
-  spec.metadata['changelog_uri'] = 'https://github.com/kochka/lingua_rs/blob/main/CHANGELOG.md'
+  spec.metadata = {
+    'source_code_uri' => spec.homepage,
+    'changelog_uri' => "#{spec.homepage}/blob/main/CHANGELOG.md",
+    'documentation_uri' => "#{spec.homepage}#readme",
+    'bug_tracker_uri' => "#{spec.homepage}/issues"
+  }
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
