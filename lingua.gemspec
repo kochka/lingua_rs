@@ -8,10 +8,11 @@ Gem::Specification.new do |spec|
   spec.authors = ['Sébastien Vrillaud']
   spec.email = ['kochka@gmail.com']
 
-  spec.summary = 'Fast language detection for Ruby, powered by Lingua (Rust).'
-  spec.description = 'Native Ruby bindings for the Lingua Rust library. ' \
-                     'Detects languages with confidence scores, ISO 639-1/639-3 support, ' \
-                     'and configurable accuracy modes.'
+  spec.summary = 'High-accuracy language detection for Ruby, powered by Lingua (Rust).'
+  spec.description = 'Native Ruby bindings for the Lingua Rust library, ' \
+                     'bringing highly accurate language detection for short text ' \
+                     'and mixed-language text to Ruby, with confidence scores ' \
+                     'and ISO 639-1/639-3 language codes.'
   spec.homepage = 'https://github.com/kochka/lingua_rs'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 3.2.0'
