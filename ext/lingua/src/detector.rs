@@ -3,7 +3,7 @@ use magnus::{Error, RArray, RHash, RModule, Ruby, function, method, prelude::*};
 
 use crate::confidence_result::ConfidenceResult;
 use crate::segment::Segment;
-use crate::helpers::{fetch_option, parse_language, value_to_string};
+use crate::helpers::{fetch_option, parse_language, unknown_language_error, value_to_string};
 use crate::language::WrappedLanguage;
 
 pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
@@ -25,7 +25,7 @@ pub fn compute_confidence(
     let language_str = value_to_string(language)?;
     let lang = parse_language(&language_str).ok_or_else(|| {
         Error::new(
-            ruby.exception_arg_error(),
+            unknown_language_error(&ruby),
             format!("unknown language: \"{language_str}\""),
         )
     })?;
@@ -116,7 +116,7 @@ pub fn build_detector_from_options(
         for l in &raw_languages {
             let lang = parse_language(l).ok_or_else(|| {
                 Error::new(
-                    ruby.exception_arg_error(),
+                    unknown_language_error(ruby),
                     format!("unknown language: \"{l}\""),
                 )
             })?;

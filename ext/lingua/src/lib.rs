@@ -45,6 +45,7 @@ fn detect_multiple(ruby: &Ruby, arguments: RArray) -> Result<RArray, Error> {
 fn init(ruby: &Ruby) -> Result<(), Error> {
     let module = ruby.define_module("Lingua")?;
 
+    helpers::define_errors(&module)?;
     language::define(ruby, &module)?;
     confidence_result::define(ruby, &module)?;
     segment::define(ruby, &module)?;

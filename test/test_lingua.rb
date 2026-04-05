@@ -69,16 +69,22 @@ class TestDetect < Minitest::Test
   end
 
   def test_invalid_language_raises_error
-    assert_raises(ArgumentError) do
+    assert_raises(Lingua::UnknownLanguageError) do
       Lingua.detect('Hello', languages: %w[en zzzz])
     end
   end
 
   def test_invalid_language_error_message
-    error = assert_raises(ArgumentError) do
+    error = assert_raises(Lingua::UnknownLanguageError) do
       Lingua.detect('Hello', languages: %w[zzzz])
     end
     assert_match(/unknown language: "zzzz"/, error.message)
+  end
+
+  def test_unknown_language_error_is_argument_error
+    assert_raises(ArgumentError) do
+      Lingua.detect('Hello', languages: %w[zzzz])
+    end
   end
 end
 
@@ -114,7 +120,7 @@ class TestConfidence < Minitest::Test
   end
 
   def test_invalid_language_raises_error
-    assert_raises(ArgumentError) do
+    assert_raises(Lingua::UnknownLanguageError) do
       Lingua.confidence('Hello', 'zzzz')
     end
   end
@@ -155,7 +161,7 @@ class TestConfidenceValues < Minitest::Test
   end
 
   def test_invalid_language_raises_error
-    assert_raises(ArgumentError) do
+    assert_raises(Lingua::UnknownLanguageError) do
       Lingua.confidence_values('Hello', languages: %w[zzzz])
     end
   end
@@ -191,7 +197,7 @@ class TestDetector < Minitest::Test
   end
 
   def test_confidence_invalid_language
-    assert_raises(ArgumentError) { @detector.confidence('Hello', 'zzzz') }
+    assert_raises(Lingua::UnknownLanguageError) { @detector.confidence('Hello', 'zzzz') }
   end
 
   def test_confidence_values_returns_confidence_results
@@ -238,7 +244,7 @@ class TestDetector < Minitest::Test
   end
 
   def test_invalid_language_raises_error
-    assert_raises(ArgumentError) do
+    assert_raises(Lingua::UnknownLanguageError) do
       Lingua::Detector.new(languages: %w[en zzzz])
     end
   end

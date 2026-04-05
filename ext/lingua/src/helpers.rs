@@ -1,7 +1,23 @@
 use std::str::FromStr;
+use std::cell::Cell;
 
 use lingua::{IsoCode639_1, IsoCode639_3, Language};
-use magnus::{Error, Ruby, Symbol, prelude::*};
+use magnus::{ExceptionClass, Error, RModule, Ruby, Symbol, prelude::*};
+
+thread_local! {
+    static UNKNOWN_LANGUAGE_ERROR: Cell<Option<ExceptionClass>> = const { Cell::new(None) };
+}
+
+pub fn define_errors(module: &RModule) -> Result<(), Error> {
+    let ruby = Ruby::get().unwrap();
+    let class = module.define_error("UnknownLanguageError", ruby.exception_arg_error())?;
+    UNKNOWN_LANGUAGE_ERROR.set(Some(class));
+    Ok(())
+}
+
+pub fn unknown_language_error(ruby: &Ruby) -> ExceptionClass {
+    UNKNOWN_LANGUAGE_ERROR.get().unwrap_or_else(|| ruby.exception_arg_error())
+}
 
 pub fn parse_language(input: &str) -> Option<Language> {
     Language::from_str(input)

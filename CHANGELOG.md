@@ -2,8 +2,9 @@
 
 ## 0.4.0
 
-- Add language predicate methods (`lang.french?`, `lang.english?`, etc.)
+- Add language predicate methods (`lang.french?`, `lang.fr?`, `lang.fra?`)
 - Add `iso_code` alias for `to_iso6391`
+- Add `Lingua::UnknownLanguageError` (subclass of `ArgumentError`) for invalid language inputs
 
 ## 0.3.0
 

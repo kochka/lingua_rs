@@ -196,6 +196,22 @@ Returned by `detect_multiple`.
 | `to_s` | `String` | `'French (0-22): Parlez-vous français? '` |
 | `inspect` | `String` | `'#<Lingua::Segment French (0-22) "Parlez-vous français? ">'` |
 
+### Error handling
+
+`Lingua::UnknownLanguageError` (subclass of `ArgumentError`) is raised when an unrecognized language name or code is passed:
+
+```ruby
+Lingua.detect('Hello', languages: %w[en zzzz])
+# => Lingua::UnknownLanguageError: unknown language: "zzzz"
+
+# Can also be rescued as ArgumentError
+begin
+  Lingua.detect('Hello', languages: %w[zzzz])
+rescue ArgumentError => e
+  puts e.message
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake compile` to build the native extension and `rake test` to run the tests.
