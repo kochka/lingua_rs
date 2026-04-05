@@ -2,6 +2,7 @@ use lingua::{LanguageDetector, LanguageDetectorBuilder};
 use magnus::{Error, RArray, RHash, Ruby};
 
 use crate::confidence_result::ConfidenceResult;
+use crate::segment::Segment;
 use crate::helpers::{fetch_option, parse_language, value_to_string};
 use crate::language::WrappedLanguage;
 
@@ -66,6 +67,32 @@ impl RubyDetector {
     pub fn confidence_values(&self, subject: String) -> Result<RArray, Error> {
         compute_confidence_values(&self.detector, subject)
     }
+
+    pub fn detect_multiple(&self, subject: String) -> Result<RArray, Error> {
+        compute_detect_multiple(&self.detector, &subject)
+    }
+}
+
+pub fn compute_detect_multiple(
+    detector: &LanguageDetector,
+    subject: &str,
+) -> Result<RArray, Error> {
+    let ruby = Ruby::get().unwrap();
+    let results = detector.detect_multiple_languages_of(subject);
+    let array = ruby.ary_new_capa(results.len());
+    for r in results {
+        let text = subject[r.start_index()..r.end_index()].to_string();
+        let start_index = subject[..r.start_index()].chars().count();
+        let end_index = start_index + text.chars().count();
+        array.push(Segment {
+            language: r.language(),
+            start_index,
+            end_index,
+            word_count: r.word_count(),
+            text,
+        })?;
+    }
+    Ok(array)
 }
 
 pub fn build_detector_from_options(

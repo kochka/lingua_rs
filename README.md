@@ -118,6 +118,26 @@ results.first.to_s       # => "French (0.82)"
 results.sum(&:confidence) # => 1.0
 ```
 
+### Mixed-language detection
+
+`detect_multiple` identifies multiple languages within a single text and returns an array of `Lingua::Segment` objects. Available on both `Lingua::Detector` and as a module method on `Lingua`.
+
+```ruby
+text = "Parlez-vous français? Ich spreche Französisch nur ein bisschen. A little bit is better than nothing."
+
+segments = Lingua.detect_multiple(text, languages: %w[en fr de])
+segments.each do |s|
+  puts "#{s.language} (#{s.start_index}..#{s.end_index}): #{s.text}"
+end
+# French (0..22): Parlez-vous français?
+# German (23..64): Ich spreche Französisch nur ein bisschen.
+# English (65..101): A little bit is better than nothing.
+
+# With a persistent detector
+detector = Lingua::Detector.new(languages: %w[en fr de])
+detector.detect_multiple(text)
+```
+
 ### `Lingua::Language` methods
 
 `Lingua::Language` objects support equality (`==`) and can be used as Hash keys.
@@ -143,6 +163,20 @@ Returned by `confidence_values`.
 | `confidence` | `Float` | `0.8217` |
 | `to_s` | `String` | `'French (0.82)'` |
 | `inspect` | `String` | `'#<Lingua::ConfidenceResult French (0.8217)>'` |
+
+### `Lingua::Segment` methods
+
+Returned by `detect_multiple`.
+
+| Method | Return type | Example |
+|---|---|---|
+| `language` | `Lingua::Language` | `#<Lingua::Language French>` |
+| `start_index` | `Integer` | `0` |
+| `end_index` | `Integer` | `22` |
+| `word_count` | `Integer` | `3` |
+| `text` | `String` | `'Parlez-vous français? '` |
+| `to_s` | `String` | `'French (0-22): Parlez-vous français? '` |
+| `inspect` | `String` | `'#<Lingua::Segment French (0-22) "Parlez-vous français? ">'` |
 
 ## Development
 
