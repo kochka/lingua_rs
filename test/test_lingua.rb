@@ -249,7 +249,7 @@ class TestDetector < Minitest::Test
 end
 
 class TestDetectMultipleLanguages < Minitest::Test
-  SENTENCE = "Parlez-vous français? Ich spreche Französisch nur ein bisschen. A little bit is better than nothing."
+  SENTENCE = 'Parlez-vous français? Ich spreche Französisch nur ein bisschen. A little bit is better than nothing.'
 
   def test_returns_array_of_detection_results
     results = Lingua.detect_multiple(SENTENCE, languages: %w[en fr de])
