@@ -153,6 +153,14 @@ detector.detect_multiple(text)
 | `==` | `Boolean` | Compare two languages |
 | `hash` | `Integer` | Hash value (usable as Hash key) |
 
+Class methods:
+
+| Method | Return type | Description |
+|---|---|---|
+| `Lingua::Language.all` | `Array<Lingua::Language>` | All supported languages |
+| `Lingua::Language.names` | `Array<String>` | All language names (e.g. `'French'`) |
+| `Lingua::Language.iso_codes` | `Array<String>` | All ISO 639-1 codes (e.g. `'fr'`) |
+
 ### `Lingua::ConfidenceResult` methods
 
 Returned by `confidence_values`.

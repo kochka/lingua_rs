@@ -359,4 +359,37 @@ class TestLanguage < Minitest::Test
       Lingua::Language.new
     end
   end
+
+  def test_all_returns_array_of_languages
+    all = Lingua::Language.all
+    assert_instance_of Array, all
+    assert_instance_of Lingua::Language, all.first
+    assert_includes all.map(&:to_s), 'French'
+    assert_includes all.map(&:to_s), 'English'
+  end
+
+  def test_all_is_sorted
+    all = Lingua::Language.all.map(&:to_s)
+    assert_equal all.sort, all
+  end
+
+  def test_names_returns_strings
+    names = Lingua::Language.names
+    assert_instance_of Array, names
+    assert_instance_of String, names.first
+    assert_includes names, 'French'
+    assert_includes names, 'English'
+  end
+
+  def test_codes_returns_iso6391_codes
+    codes = Lingua::Language.iso_codes
+    assert_instance_of Array, codes
+    assert_includes codes, 'fr'
+    assert_includes codes, 'en'
+  end
+
+  def test_all_names_codes_same_size
+    assert_equal Lingua::Language.all.size, Lingua::Language.names.size
+    assert_equal Lingua::Language.all.size, Lingua::Language.iso_codes.size
+  end
 end

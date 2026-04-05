@@ -59,6 +59,9 @@ fn init(ruby: &Ruby) -> Result<(), Error> {
     language_class.define_method("==", method!(WrappedLanguage::eq, 1))?;
     language_class.define_method("eql?", method!(WrappedLanguage::eq, 1))?;
     language_class.define_method("hash", method!(WrappedLanguage::hash, 0))?;
+    language_class.define_singleton_method("all", function!(WrappedLanguage::all, 0))?;
+    language_class.define_singleton_method("names", function!(WrappedLanguage::names, 0))?;
+    language_class.define_singleton_method("iso_codes", function!(WrappedLanguage::iso_codes, 0))?;
 
     // Lingua::ConfidenceResult
     let confidence_class = module.define_class("ConfidenceResult", ruby.class_object())?;

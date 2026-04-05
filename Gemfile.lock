@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lingua_rs (0.2.0)
+    lingua_rs (0.3.0)
       rb_sys (~> 0.9.126)
 
 GEM
