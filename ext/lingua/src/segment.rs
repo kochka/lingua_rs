@@ -1,6 +1,20 @@
 use lingua::Language;
+use magnus::{Error, RModule, Ruby, method, prelude::*};
 
 use crate::language::WrappedLanguage;
+
+pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
+    let class = module.define_class("Segment", ruby.class_object())?;
+    class.undef_default_alloc_func();
+    class.define_method("language", method!(Segment::language, 0))?;
+    class.define_method("start_index", method!(Segment::start_index, 0))?;
+    class.define_method("end_index", method!(Segment::end_index, 0))?;
+    class.define_method("word_count", method!(Segment::word_count, 0))?;
+    class.define_method("text", method!(Segment::text, 0))?;
+    class.define_method("to_s", method!(Segment::to_s, 0))?;
+    class.define_method("inspect", method!(Segment::inspect, 0))?;
+    Ok(())
+}
 
 #[magnus::wrap(class = "Lingua::Segment")]
 pub struct Segment {

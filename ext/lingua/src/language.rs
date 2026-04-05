@@ -1,7 +1,27 @@
 use lingua::Language;
-use magnus::{Error, RArray, Ruby, Symbol};
+use magnus::{Error, RArray, RModule, Ruby, Symbol, function, method, prelude::*};
 
 use crate::helpers::value_to_string;
+
+pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
+    let class = module.define_class("Language", ruby.class_object())?;
+    class.undef_default_alloc_func();
+    class.define_method("name", method!(WrappedLanguage::name, 0))?;
+    class.define_method("to_s", method!(WrappedLanguage::name, 0))?;
+    class.define_method("to_iso6391", method!(WrappedLanguage::to_iso6391, 0))?;
+    class.define_method("to_iso", method!(WrappedLanguage::to_iso6391, 0))?;
+    class.define_method("to_iso6393", method!(WrappedLanguage::to_iso6393, 0))?;
+    class.define_method("to_sym", method!(WrappedLanguage::to_sym, 0))?;
+    class.define_method("inspect", method!(WrappedLanguage::inspect, 0))?;
+    class.define_method("==", method!(WrappedLanguage::eq, 1))?;
+    class.define_method("eql?", method!(WrappedLanguage::eq, 1))?;
+    class.define_method("hash", method!(WrappedLanguage::hash, 0))?;
+    class.define_singleton_method("[]", function!(WrappedLanguage::lookup, 1))?;
+    class.define_singleton_method("all", function!(WrappedLanguage::all, 0))?;
+    class.define_singleton_method("names", function!(WrappedLanguage::names, 0))?;
+    class.define_singleton_method("iso_codes", function!(WrappedLanguage::iso_codes, 0))?;
+    Ok(())
+}
 
 #[magnus::wrap(class = "Lingua::Language")]
 pub struct WrappedLanguage(pub Language);

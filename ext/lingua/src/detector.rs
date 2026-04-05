@@ -1,10 +1,20 @@
 use lingua::{LanguageDetector, LanguageDetectorBuilder};
-use magnus::{Error, RArray, RHash, Ruby};
+use magnus::{Error, RArray, RHash, RModule, Ruby, function, method, prelude::*};
 
 use crate::confidence_result::ConfidenceResult;
 use crate::segment::Segment;
 use crate::helpers::{fetch_option, parse_language, value_to_string};
 use crate::language::WrappedLanguage;
+
+pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
+    let class = module.define_class("Detector", ruby.class_object())?;
+    class.define_singleton_method("new", function!(RubyDetector::new, -1))?;
+    class.define_method("detect", method!(RubyDetector::detect, 1))?;
+    class.define_method("confidence", method!(RubyDetector::confidence, 2))?;
+    class.define_method("confidence_values", method!(RubyDetector::confidence_values, 1))?;
+    class.define_method("detect_multiple", method!(RubyDetector::detect_multiple, 1))?;
+    Ok(())
+}
 
 pub fn compute_confidence(
     detector: &LanguageDetector,
