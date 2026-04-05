@@ -42,19 +42,18 @@ export PATH=/usr/lib/llvm21/bin:$PATH
 require 'lingua'
 
 lang = Lingua.detect('Bonjour le monde')
+lang.french?    # => true
 lang.to_s       # => 'French'
 lang.to_sym     # => :french
 lang.to_iso     # => 'fr'
-lang.to_iso6391 # => 'fr'
 lang.to_iso6393 # => 'fra'
-lang.inspect    # => '#<Lingua::Language French>'
 
 Lingua.detect('') # => nil
 ```
 
 ### Restricting languages
 
-Pass a `languages` option to limit detection to a subset of languages. Values can be full names, ISO 639-1 codes, or ISO 639-3 codes, and can be mixed freely.
+Pass a `languages` option to limit detection to a subset of languages. Values can be full names, ISO 639-1 codes, or ISO 639-3 codes, and can be mixed freely. Restricting the candidate set is also faster, since the detector has fewer languages to compare against.
 
 ```ruby
 # By full name
@@ -217,10 +216,10 @@ end
 By default, all 75 languages are compiled into the native extension (~278 MB). If you only need a subset, set the `LINGUA_LANGUAGES` environment variable before installing to reduce binary size and improve detection speed:
 
 ```bash
-LINGUA_LANGUAGES=french,english,german bundle install
+LINGUA_LANGUAGES=core bundle install
 ```
 
-This compiles only the selected language models (~18 MB for 3 languages). You can use individual language names or predefined bundles, and you can mix both in the same build.
+This compiles only the selected language models (~29 MB for the `core` bundle). You can use individual language names or predefined bundles, and you can mix both in the same build.
 
 Available bundles:
 
