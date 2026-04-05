@@ -10,6 +10,7 @@ pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
     class.define_method("to_s", method!(WrappedLanguage::name, 0))?;
     class.define_method("to_iso6391", method!(WrappedLanguage::to_iso6391, 0))?;
     class.define_method("to_iso", method!(WrappedLanguage::to_iso6391, 0))?;
+    class.define_method("iso_code", method!(WrappedLanguage::to_iso6391, 0))?;
     class.define_method("to_iso6393", method!(WrappedLanguage::to_iso6393, 0))?;
     class.define_method("to_sym", method!(WrappedLanguage::to_sym, 0))?;
     class.define_method("inspect", method!(WrappedLanguage::inspect, 0))?;

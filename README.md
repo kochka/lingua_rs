@@ -154,9 +154,11 @@ Lingua::Language['xxx']     # => nil
 | `name` | `String` | `'French'` |
 | `to_s` | `String` | `'French'` (alias for `name`) |
 | `to_sym` | `Symbol` | `:french` |
+| `iso_code` | `String` | `'fr'` (alias for `to_iso6391`) |
 | `to_iso` | `String` | `'fr'` (alias for `to_iso6391`) |
 | `to_iso6391` | `String` | `'fr'` |
 | `to_iso6393` | `String` | `'fra'` |
+| `french?` | `Boolean` | `true` (works with name, ISO 639-1 or ISO 639-3: `fr?`, `fra?`) |
 | `inspect` | `String` | `'#<Lingua::Language French>'` |
 | `==` | `Boolean` | Compare two languages |
 | `hash` | `Integer` | Hash value (usable as Hash key) |

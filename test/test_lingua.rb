@@ -408,6 +408,25 @@ class TestLanguage < Minitest::Test
     assert_includes codes, 'en'
   end
 
+  def test_iso_code_alias
+    assert_equal @french.to_iso6391, @french.iso_code
+  end
+
+  def test_predicate_returns_true_for_matching_language
+    assert @french.french?
+    assert @english.english?
+  end
+
+  def test_predicate_returns_false_for_non_matching_language
+    refute @french.english?
+    refute @english.french?
+  end
+
+  def test_predicate_respond_to
+    assert_respond_to @french, :french?
+    assert_respond_to @french, :english?
+  end
+
   def test_all_names_codes_same_size
     assert_equal Lingua::Language.all.size, Lingua::Language.names.size
     assert_equal Lingua::Language.all.size, Lingua::Language.iso_codes.size
