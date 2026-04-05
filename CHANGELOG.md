@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2
+
+- Validate detector options to prevent panics that crash the Ruby process
+
 ## 0.4.1
 
 - Add language predicate methods (`lang.french?`, `lang.fr?`, `lang.fra?`)

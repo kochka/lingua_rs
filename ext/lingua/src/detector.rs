@@ -122,6 +122,12 @@ pub fn build_detector_from_options(
             })?;
             languages.push(lang);
         }
+        if languages.is_empty() {
+            return Err(magnus::Error::new(
+                ruby.exception_arg_error(),
+                "languages must contain at least 1 language",
+            ));
+        }
         LanguageDetectorBuilder::from_languages(&languages)
     } else {
         LanguageDetectorBuilder::from_all_languages()
@@ -129,6 +135,12 @@ pub fn build_detector_from_options(
 
     if let Some(opts) = options {
         if let Some(dist) = fetch_option::<f64>(ruby, opts, "minimum_relative_distance") {
+            if !(0.0..=0.99).contains(&dist) {
+                return Err(magnus::Error::new(
+                    ruby.exception_arg_error(),
+                    "minimum_relative_distance must be between 0.0 and 0.99",
+                ));
+            }
             builder.with_minimum_relative_distance(dist);
         }
         if fetch_option::<bool>(ruby, opts, "is_every_language_model_preloaded").unwrap_or(false) {
