@@ -140,11 +140,19 @@ detector.detect_multiple(text)
 
 ### `Lingua::Language` methods
 
-`Lingua::Language` objects support equality (`==`) and can be used as Hash keys.
+`Lingua::Language` objects support equality (`==`) and can be used as Hash keys. You can look up a language by name, ISO 639-1 code, or ISO 639-3 code using `[]`:
+
+```ruby
+Lingua::Language['French']  # => #<Lingua::Language French>
+Lingua::Language[:fr]       # => #<Lingua::Language French>
+Lingua::Language['fra']     # => #<Lingua::Language French>
+Lingua::Language['xxx']     # => nil
+```
 
 | Method | Return type | Example |
 |---|---|---|
-| `to_s` | `String` | `'French'` |
+| `name` | `String` | `'French'` |
+| `to_s` | `String` | `'French'` (alias for `name`) |
 | `to_sym` | `Symbol` | `:french` |
 | `to_iso` | `String` | `'fr'` (alias for `to_iso6391`) |
 | `to_iso6391` | `String` | `'fr'` |

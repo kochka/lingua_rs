@@ -1,10 +1,17 @@
 use lingua::Language;
-use magnus::{RArray, Ruby, Symbol};
+use magnus::{Error, RArray, Ruby, Symbol};
+
+use crate::helpers::value_to_string;
 
 #[magnus::wrap(class = "Lingua::Language")]
 pub struct WrappedLanguage(pub Language);
 
 impl WrappedLanguage {
+    pub fn lookup(value: magnus::Value) -> Result<Option<WrappedLanguage>, Error> {
+        let input = value_to_string(value)?;
+        Ok(crate::helpers::parse_language(&input).map(WrappedLanguage))
+    }
+
     pub fn all() -> RArray {
         let ruby = Ruby::get().unwrap();
         let mut langs: Vec<Language> = Language::all().into_iter().collect();
@@ -38,7 +45,7 @@ impl WrappedLanguage {
         array
     }
 
-    pub fn to_s(&self) -> String {
+    pub fn name(&self) -> String {
         self.0.to_string()
     }
 

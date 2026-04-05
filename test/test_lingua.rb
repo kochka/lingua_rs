@@ -360,6 +360,26 @@ class TestLanguage < Minitest::Test
     end
   end
 
+  def test_lookup_by_name
+    assert_equal 'French', Lingua::Language['French'].to_s
+  end
+
+  def test_lookup_by_iso6391_string
+    assert_equal 'French', Lingua::Language['fr'].to_s
+  end
+
+  def test_lookup_by_iso6391_symbol
+    assert_equal 'French', Lingua::Language[:fr].to_s
+  end
+
+  def test_lookup_by_iso6393
+    assert_equal 'French', Lingua::Language['fra'].to_s
+  end
+
+  def test_lookup_returns_nil_for_unknown
+    assert_nil Lingua::Language['xxx']
+  end
+
   def test_all_returns_array_of_languages
     all = Lingua::Language.all
     assert_instance_of Array, all

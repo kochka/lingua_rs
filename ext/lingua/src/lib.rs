@@ -50,7 +50,8 @@ fn init(ruby: &Ruby) -> Result<(), Error> {
     // Lingua::Language
     let language_class = module.define_class("Language", ruby.class_object())?;
     language_class.undef_default_alloc_func();
-    language_class.define_method("to_s", method!(WrappedLanguage::to_s, 0))?;
+    language_class.define_method("name", method!(WrappedLanguage::name, 0))?;
+    language_class.define_method("to_s", method!(WrappedLanguage::name, 0))?;
     language_class.define_method("to_iso6391", method!(WrappedLanguage::to_iso6391, 0))?;
     language_class.define_method("to_iso", method!(WrappedLanguage::to_iso6391, 0))?;
     language_class.define_method("to_iso6393", method!(WrappedLanguage::to_iso6393, 0))?;
@@ -59,6 +60,7 @@ fn init(ruby: &Ruby) -> Result<(), Error> {
     language_class.define_method("==", method!(WrappedLanguage::eq, 1))?;
     language_class.define_method("eql?", method!(WrappedLanguage::eq, 1))?;
     language_class.define_method("hash", method!(WrappedLanguage::hash, 0))?;
+    language_class.define_singleton_method("[]", function!(WrappedLanguage::lookup, 1))?;
     language_class.define_singleton_method("all", function!(WrappedLanguage::all, 0))?;
     language_class.define_singleton_method("names", function!(WrappedLanguage::names, 0))?;
     language_class.define_singleton_method("iso_codes", function!(WrappedLanguage::iso_codes, 0))?;
