@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.3
+
+- Add `--with-lingua-languages` build option for persistent language selection via `bundle config`
+
 ## 0.4.2
 
 - Validate detector options to prevent panics that crash the Ruby process

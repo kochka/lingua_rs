@@ -213,21 +213,41 @@ end
 
 ## Optimization: selecting languages
 
-By default, all 75 languages are compiled into the native extension (~278 MB). If you only need a subset, set the `LINGUA_LANGUAGES` environment variable before installing to reduce binary size and improve detection speed:
+By default, all 75 languages are compiled into the native extension (~278 MB). If you only need a subset, select languages at build time to reduce binary size and improve detection speed.
+
+### Build option
+
+Use `--with-lingua-languages` to select languages. With Bundler you can persist the setting so it applies to every future `bundle install`:
 
 ```bash
-LINGUA_LANGUAGES=core bundle install
+bundle config set build.lingua_rs --with-lingua-languages=core
+bundle install
 ```
 
 This compiles only the selected language models (~29 MB for the `core` bundle). You can use individual language names or predefined bundles, and you can mix both in the same build.
 
-This also works with `gem install`, for example:
+The setting is saved in your local Bundler config (`~/.bundle/config` or `.bundle/config`) and is reused automatically on subsequent installs. To change it later:
 
 ```bash
-LINGUA_LANGUAGES=french,english,german gem install lingua_rs
+bundle config set build.lingua_rs --with-lingua-languages=europe_common,japanese
+bundle install
 ```
 
-Available bundles:
+To remove it and go back to all languages:
+
+```bash
+bundle config unset build.lingua_rs
+bundle install
+```
+
+This also works with `gem install`:
+
+```bash
+gem install lingua_rs -- --with-lingua-languages=french,english,german
+```
+
+
+### Available languages and bundles
 
 | Bundle | Languages |
 | --- | --- |
@@ -242,9 +262,9 @@ Available bundles:
 Examples:
 
 ```bash
-LINGUA_LANGUAGES=core bundle install
-LINGUA_LANGUAGES=europe_common,polish bundle install
-LINGUA_LANGUAGES=east_asia,english bundle install
+bundle config set build.lingua_rs --with-lingua-languages=core
+bundle config set build.lingua_rs --with-lingua-languages=europe_common,polish
+bundle config set build.lingua_rs --with-lingua-languages=east_asia,english
 ```
 
 Language and bundle names must match the Cargo features defined by this gem (lowercase, e.g. `french`, `english`, `german`, `core`, `europe_common`).

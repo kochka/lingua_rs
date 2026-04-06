@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Sébastien Vrillaud']
   spec.email = ['kochka@gmail.com']
 
-  spec.summary = 'High-accuracy language detection for Ruby, powered by Lingua (Rust).'
+  spec.summary = 'High-accuracy language detection powered by Lingua (Rust).'
   spec.description = 'Native Ruby bindings for the Lingua Rust library, ' \
                      'bringing highly accurate language detection for short text ' \
                      'and mixed-language text to Ruby, with confidence scores ' \
