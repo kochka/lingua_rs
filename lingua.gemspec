@@ -5,6 +5,11 @@ require_relative 'lib/lingua/version'
 Gem::Specification.new do |spec|
   spec.name = 'lingua_rs'
   spec.version = Lingua::VERSION
+  ts = ENV['SOURCE_DATE_EPOCH'] \
+    || `git log -1 --format=%ct 2>/dev/null`.strip.then { |s| s.empty? ? nil : s } \
+    || Time.now.to_i.to_s
+  spec.date = Time.at(ts.to_i).utc
+
   spec.authors = ['Sébastien Vrillaud']
   spec.email = ['kochka@gmail.com']
 
