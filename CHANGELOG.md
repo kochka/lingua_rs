@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.5
+
+- Bump `bindgen` to 0.72 (adds LLVM 22+ support)
+- Bump `rb-sys` crate to 0.9.126
+
 ## 0.4.3
 
 - Add `--with-lingua-languages` build option for persistent language selection via `bundle config`

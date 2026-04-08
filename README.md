@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/gem/dt/lingua_rs?color=0969da)](https://rubygems.org/gems/lingua_rs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-6e7781.svg)](https://opensource.org/licenses/MIT)
 
-A Ruby gem wrapping the [Lingua](https://github.com/pemistahl/lingua-rs) Rust library for language detection.
+Native Ruby bindings for the [Lingua](https://github.com/pemistahl/lingua-rs) Rust library, bringing highly accurate language detection for short text and mixed-language text, with confidence scores and ISO 639-1/639-3 language codes.
 
 ## Installation
 
@@ -25,12 +25,7 @@ Then run `bundle install`.
 
 ### Build requirements
 
-A Rust toolchain is required to compile the native extension. `rb-sys` currently depends on `bindgen 0.69` which does not support LLVM 22+. If your system uses LLVM 22+, point to LLVM 21:
-
-```bash
-export LIBCLANG_PATH=/usr/lib/llvm21/lib
-export PATH=/usr/lib/llvm21/bin:$PATH
-```
+A Rust toolchain is required to compile the native extension.
 
 ## Usage
 
@@ -148,6 +143,12 @@ Lingua::Language['fra']     # => #<Lingua::Language French>
 Lingua::Language['xxx']     # => nil
 ```
 
+| Method | Return type | Description |
+|---|---|---|
+| `Lingua::Language.all` | `Array<Lingua::Language>` | All supported languages |
+| `Lingua::Language.names` | `Array<String>` | All language names (e.g. `'French'`) |
+| `Lingua::Language.iso_codes` | `Array<String>` | All ISO 639-1 codes (e.g. `'fr'`) |
+
 | Method | Return type | Example |
 |---|---|---|
 | `name` | `String` | `'French'` |
@@ -157,18 +158,10 @@ Lingua::Language['xxx']     # => nil
 | `to_iso` | `String` | `'fr'` (alias for `to_iso6391`) |
 | `to_iso6391` | `String` | `'fr'` |
 | `to_iso6393` | `String` | `'fra'` |
-| `french?` | `Boolean` | `true` (works with name, ISO 639-1 or ISO 639-3: `fr?`, `fra?`) |
+| `<name>?` | `Boolean` | Dynamic predicate for any language (`french?`, `fr?`, `fra?`) |
 | `inspect` | `String` | `'#<Lingua::Language French>'` |
 | `==` | `Boolean` | Compare two languages |
 | `hash` | `Integer` | Hash value (usable as Hash key) |
-
-Class methods:
-
-| Method | Return type | Description |
-|---|---|---|
-| `Lingua::Language.all` | `Array<Lingua::Language>` | All supported languages |
-| `Lingua::Language.names` | `Array<String>` | All language names (e.g. `'French'`) |
-| `Lingua::Language.iso_codes` | `Array<String>` | All ISO 639-1 codes (e.g. `'fr'`) |
 
 ### `Lingua::ConfidenceResult` methods
 
@@ -200,14 +193,10 @@ Returned by `detect_multiple`.
 `Lingua::UnknownLanguageError` (subclass of `ArgumentError`) is raised when an unrecognized language name or code is passed:
 
 ```ruby
-Lingua.detect('Hello', languages: %w[en zzzz])
-# => Lingua::UnknownLanguageError: unknown language: "zzzz"
-
-# Can also be rescued as ArgumentError
 begin
-  Lingua.detect('Hello', languages: %w[zzzz])
-rescue ArgumentError => e
-  puts e.message
+  Lingua.detect('Hello', languages: %w[en zzzz])
+rescue Lingua::UnknownLanguageError => e
+  puts e.message # => unknown language: "zzzz"
 end
 ```
 
