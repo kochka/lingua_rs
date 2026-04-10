@@ -157,9 +157,9 @@ detector.detect_multiple_batch(['Bonjour le monde. Hello world.', 'Ich bin müde
 | Method | Return type | Description |
 |---|---|---|
 | `detect_batch(texts)` | `Array<Language\|nil>` | Detect language of each text |
-| `detect_multiple_batch(texts)` | `Array<Array<Segment>>` | Mixed-language detection for each text |
-| `confidence_values_batch(texts)` | `Array<Array<ConfidenceResult>>` | Confidence values for each text |
 | `confidence_batch(texts, language)` | `Array<Float>` | Confidence for a specific language across texts |
+| `confidence_values_batch(texts)` | `Array<Array<ConfidenceResult>>` | Confidence values for each text |
+| `detect_multiple_batch(texts)` | `Array<Array<Segment>>` | Mixed-language detection for each text |
 
 ### Error handling
 
