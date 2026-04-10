@@ -19,4 +19,10 @@ RbSys::ExtensionTask.new('lingua', GEMSPEC) do |ext|
   ext.lib_dir = 'lib/lingua'
 end
 
+desc 'Run benchmarks (sequential vs batch)'
+task bench: :compile do
+  ENV['BENCH'] = '1'
+  ruby '-Itest', 'test/test_benchmark.rb'
+end
+
 task default: %i[compile test rubocop]

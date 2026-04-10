@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Add parallel batch methods on `Lingua::Detector`: `detect_batch`, `confidence_batch`, `confidence_values_batch`, `detect_multiple_batch`,
+
 ## 0.4.5
 
 - Bump `bindgen` to 0.72 (adds LLVM 22+ support)

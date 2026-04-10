@@ -66,8 +66,6 @@ Lingua.detect('Bonjour', languages: %w[en french deu])
 
 ### Options
 
-All options accept both symbol and string keys.
-
 | Option | Type | Description |
 |---|---|---|
 | `languages` | `Array<String>` | Restrict detection to these languages (names, ISO 639-1 or ISO 639-3 codes) |
@@ -132,7 +130,52 @@ detector = Lingua::Detector.new(languages: %w[en fr de])
 detector.detect_multiple(text)
 ```
 
-### `Lingua::Language` methods
+### Parallel batch detection
+
+`Lingua::Detector` provides batch methods that process multiple texts in parallel using [Rayon](https://github.com/rayon-rs/rayon). These are significantly faster than calling single-text methods in a loop.
+
+```ruby
+detector = Lingua::Detector.new(languages: %w[en fr de])
+
+# Detect language of multiple texts
+detector.detect_batch(['Bonjour le monde', 'Hello world', 'Hallo Welt'])
+# => [#<Lingua::Language French>, #<Lingua::Language English>, #<Lingua::Language German>]
+
+# Confidence for a specific language across multiple texts
+detector.confidence_batch(['Bonjour le monde', 'Hello world'], :fr)
+# => [0.8217, 0.0215]
+
+# Confidence values for multiple texts
+detector.confidence_values_batch(['Bonjour le monde', 'Hello world'])
+# => [[#<Lingua::ConfidenceResult French (0.82)>, ...], [#<Lingua::ConfidenceResult English (0.91)>, ...]]
+
+# Mixed-language detection on multiple texts
+detector.detect_multiple_batch(['Bonjour le monde. Hello world.', 'Ich bin müde. Salut tout le monde.'])
+# => [[#<Lingua::Segment French ...>, #<Lingua::Segment English ...>], [#<Lingua::Segment German ...>, #<Lingua::Segment French ...>]]
+```
+
+| Method | Return type | Description |
+|---|---|---|
+| `detect_batch(texts)` | `Array<Language\|nil>` | Detect language of each text |
+| `detect_multiple_batch(texts)` | `Array<Array<Segment>>` | Mixed-language detection for each text |
+| `confidence_values_batch(texts)` | `Array<Array<ConfidenceResult>>` | Confidence values for each text |
+| `confidence_batch(texts, language)` | `Array<Float>` | Confidence for a specific language across texts |
+
+### Error handling
+
+`Lingua::UnknownLanguageError` (subclass of `ArgumentError`) is raised when an unrecognized language name or code is passed:
+
+```ruby
+begin
+  Lingua.detect('Hello', languages: %w[en zzzz])
+rescue Lingua::UnknownLanguageError => e
+  puts e.message # => unknown language: "zzzz"
+end
+```
+
+## API Reference
+
+### `Lingua::Language`
 
 `Lingua::Language` objects support equality (`==`) and can be used as Hash keys. You can look up a language by name, ISO 639-1 code, or ISO 639-3 code using `[]`:
 
@@ -163,7 +206,7 @@ Lingua::Language['xxx']     # => nil
 | `==` | `Boolean` | Compare two languages |
 | `hash` | `Integer` | Hash value (usable as Hash key) |
 
-### `Lingua::ConfidenceResult` methods
+### `Lingua::ConfidenceResult`
 
 Returned by `confidence_values`.
 
@@ -174,7 +217,7 @@ Returned by `confidence_values`.
 | `to_s` | `String` | `'French (0.82)'` |
 | `inspect` | `String` | `'#<Lingua::ConfidenceResult French (0.8217)>'` |
 
-### `Lingua::Segment` methods
+### `Lingua::Segment`
 
 Returned by `detect_multiple`.
 
@@ -187,18 +230,6 @@ Returned by `detect_multiple`.
 | `text` | `String` | `'Parlez-vous français? '` |
 | `to_s` | `String` | `'French (0-22): Parlez-vous français? '` |
 | `inspect` | `String` | `'#<Lingua::Segment French (0-22) "Parlez-vous français? ">'` |
-
-### Error handling
-
-`Lingua::UnknownLanguageError` (subclass of `ArgumentError`) is raised when an unrecognized language name or code is passed:
-
-```ruby
-begin
-  Lingua.detect('Hello', languages: %w[en zzzz])
-rescue Lingua::UnknownLanguageError => e
-  puts e.message # => unknown language: "zzzz"
-end
-```
 
 ## Optimization: selecting languages
 
@@ -265,6 +296,8 @@ Supported languages (from [Lingua Rust's official list](https://github.com/pemis
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake compile` to build the native extension and `rake test` to run the tests.
+
+To run benchmarks (sequential vs batch performance comparison): `rake bench`
 
 ## Acknowledgements
 

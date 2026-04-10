@@ -13,6 +13,10 @@ pub fn define(ruby: &Ruby, module: &RModule) -> Result<(), Error> {
     class.define_method("confidence", method!(RubyDetector::confidence, 2))?;
     class.define_method("confidence_values", method!(RubyDetector::confidence_values, 1))?;
     class.define_method("detect_multiple", method!(RubyDetector::detect_multiple, 1))?;
+    class.define_method("detect_batch", method!(RubyDetector::detect_batch, 1))?;
+    class.define_method("detect_multiple_batch", method!(RubyDetector::detect_multiple_batch, 1))?;
+    class.define_method("confidence_values_batch", method!(RubyDetector::confidence_values_batch, 1))?;
+    class.define_method("confidence_batch", method!(RubyDetector::confidence_batch, 2))?;
     Ok(())
 }
 
@@ -80,6 +84,73 @@ impl RubyDetector {
 
     pub fn detect_multiple(&self, subject: String) -> Result<RArray, Error> {
         compute_detect_multiple(&self.detector, &subject)
+    }
+
+    pub fn detect_batch(&self, texts: Vec<String>) -> Result<RArray, Error> {
+        let ruby = Ruby::get().unwrap();
+        let results = self.detector.detect_languages_in_parallel_of(&texts);
+        let array = ruby.ary_new_capa(results.len());
+        for result in results {
+            array.push(result.map(WrappedLanguage))?;
+        }
+        Ok(array)
+    }
+
+    pub fn detect_multiple_batch(&self, texts: Vec<String>) -> Result<RArray, Error> {
+        let ruby = Ruby::get().unwrap();
+        let results = self.detector.detect_multiple_languages_in_parallel_of(&texts);
+        let outer = ruby.ary_new_capa(results.len());
+        for (detection_results, subject) in results.iter().zip(texts.iter()) {
+            let inner = ruby.ary_new_capa(detection_results.len());
+            for r in detection_results {
+                let text = subject[r.start_index()..r.end_index()].to_string();
+                let start_index = subject[..r.start_index()].chars().count();
+                let end_index = start_index + text.chars().count();
+                inner.push(Segment {
+                    language: r.language(),
+                    start_index,
+                    end_index,
+                    word_count: r.word_count(),
+                    text,
+                })?;
+            }
+            outer.push(inner)?;
+        }
+        Ok(outer)
+    }
+
+    pub fn confidence_values_batch(&self, texts: Vec<String>) -> Result<RArray, Error> {
+        let ruby = Ruby::get().unwrap();
+        let results = self.detector.compute_language_confidence_values_in_parallel(&texts);
+        let outer = ruby.ary_new_capa(results.len());
+        for values in results {
+            let inner = ruby.ary_new_capa(values.len());
+            for (language, confidence) in values {
+                inner.push(ConfidenceResult {
+                    language,
+                    confidence,
+                })?;
+            }
+            outer.push(inner)?;
+        }
+        Ok(outer)
+    }
+
+    pub fn confidence_batch(&self, texts: Vec<String>, language: magnus::Value) -> Result<RArray, Error> {
+        let ruby = Ruby::get().unwrap();
+        let language_str = value_to_string(language)?;
+        let lang = parse_language(&language_str).ok_or_else(|| {
+            Error::new(
+                unknown_language_error(&ruby),
+                format!("unknown language: \"{language_str}\""),
+            )
+        })?;
+        let results = self.detector.compute_language_confidence_in_parallel(&texts, lang);
+        let array = ruby.ary_new_capa(results.len());
+        for score in results {
+            array.push(score)?;
+        }
+        Ok(array)
     }
 }
 
