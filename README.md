@@ -161,6 +161,15 @@ detector.detect_multiple_batch(['Bonjour le monde. Hello world.', 'Ich bin müde
 | `confidence_values_batch(texts)` | `Array<Array<ConfidenceResult>>` | Confidence values for each text |
 | `detect_multiple_batch(texts)` | `Array<Array<Segment>>` | Mixed-language detection for each text |
 
+Results are returned in the same order as the input, so you can pair them with `zip`:
+
+```ruby
+texts = ['Bonjour le monde', 'Hello world', 'Hallo Welt']
+texts.zip(detector.detect_batch(texts)) do |text, language|
+  puts "#{text} => #{language}"
+end
+```
+
 ### Error handling
 
 `Lingua::UnknownLanguageError` (subclass of `ArgumentError`) is raised when an unrecognized language name or code is passed:
