@@ -25,7 +25,7 @@ Then run `bundle install`.
 
 ### Build requirements
 
-A Rust toolchain is required to compile the native extension.
+A Rust toolchain (**1.87+**) is required to compile the native extension.
 
 ## Usage
 
@@ -239,6 +239,49 @@ Returned by `detect_multiple`.
 | `text` | `String` | `'Parlez-vous français? '` |
 | `to_s` | `String` | `'French (0-22): Parlez-vous français? '` |
 | `inspect` | `String` | `'#<Lingua::Segment French (0-22) "Parlez-vous français? ">'` |
+
+## Command-line tool
+
+The gem ships with a `lingua` executable that wraps the library for shell use.
+
+```bash
+# Text as argument or on stdin
+lingua 'Bonjour le monde'                     # => French
+echo 'Hello world' | lingua                   # => English
+
+# Output format
+lingua -f iso 'Bonjour le monde'              # => fr
+lingua -f iso6393 'Bonjour le monde'          # => fra
+lingua -f json 'Bonjour le monde'             # => {"name":"French","iso":"fr","iso6393":"fra"}
+
+# Confidence values
+lingua -c -l en,fr,de 'Bonjour le monde'
+# French: 0.8217
+# German: 0.1216
+# English: 0.0567
+
+# Mixed-language detection
+lingua -m -l en,fr,de 'Parlez-vous français? Hello world.'
+# French (0-22): Parlez-vous français?
+# English (22-34): Hello world.
+
+# Restrict candidates
+lingua -l en,fr,de 'Bonjour'
+
+# Batch: one text per line (use "-" for stdin)
+lingua --batch texts.txt
+cat texts.txt | lingua --batch -
+```
+
+| Option | Description |
+|---|---|
+| `-f`, `--format FORMAT` | Output format: `name` (default), `iso`, `iso6393`, `json` |
+| `-c`, `--confidences` | Output confidence for all candidate languages |
+| `-m`, `--multiple` | Detect multiple languages within the text |
+| `-l`, `--languages LIST` | Comma-separated list of languages (names or ISO codes) |
+| `--batch FILE` | Treat each line of FILE (or `-` for stdin) as a separate input |
+| `-v`, `--version` | Show version |
+| `-h`, `--help` | Show help |
 
 ## Optimization: selecting languages
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- Add `lingua` command-line tool for shell use (detection, confidences, multi-language, batch from file/stdin, JSON output)
+
 ## 0.5.0
 
 - Add parallel batch methods on `Lingua::Detector`: `detect_batch`, `confidence_batch`, `confidence_values_batch`, `detect_multiple_batch`,

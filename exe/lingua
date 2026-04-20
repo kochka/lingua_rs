@@ -1,0 +1,125 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'optparse'
+require 'json'
+require 'lingua'
+
+def build_parser(options)
+  OptionParser.new do |opts|
+    opts.banner = 'Usage: lingua [options] [TEXT]'
+    opts.separator ''
+    opts.separator 'If TEXT is omitted, input is read from stdin.'
+    opts.separator ''
+    opts.separator 'Options:'
+
+    opts.on('-f', '--format FORMAT', %w[iso iso6393 name json],
+            'Output format: name (default), iso, iso6393, json') { |f| options[:format] = f.to_sym }
+    opts.on('-c', '--confidences',
+            'Output confidence values for all candidate languages') { options[:mode] = :confidences }
+    opts.on('-m', '--multiple',
+            'Detect multiple languages within the text') { options[:mode] = :multiple }
+    opts.on('-l', '--languages LIST',
+            'Restrict detection to comma-separated languages (names or ISO codes)') do |list|
+      options[:languages] = list.split(',').map(&:strip)
+    end
+    opts.on('--batch FILE',
+            'Treat each line of FILE (or "-" for stdin) as a separate input') { |f| options[:batch] = f }
+    opts.on('-h', '--help', 'Show this help') do
+      puts opts
+      exit
+    end
+    opts.on('-v', '--version', 'Show version') do
+      puts Lingua::VERSION
+      exit
+    end
+  end
+end
+
+options = { format: :name, mode: :detect, languages: nil, batch: nil }
+build_parser(options).parse!
+
+def format_language(lang, format)
+  return nil if lang.nil?
+
+  case format
+  when :iso     then lang.to_iso
+  when :iso6393 then lang.to_iso6393
+  when :name    then lang.name
+  when :json    then { name: lang.name, iso: lang.to_iso, iso6393: lang.to_iso6393 }
+  end
+end
+
+def render_detect(lang, format)
+  formatted = format_language(lang, format)
+  if format == :json
+    JSON.generate(formatted)
+  else
+    formatted.to_s
+  end
+end
+
+def render_confidences(results, format)
+  if format == :json
+    JSON.generate(results.map do |r|
+      { language: format_language(r.language, :iso), confidence: r.confidence }
+    end)
+  else
+    results.map { |r| "#{format_language(r.language, format)}: #{format('%.4f', r.confidence)}" }
+           .join("\n")
+  end
+end
+
+def render_multiple(segments, format)
+  if format == :json
+    JSON.generate(segments.map do |s|
+      { language: format_language(s.language, :iso),
+        start_index: s.start_index,
+        end_index: s.end_index,
+        text: s.text }
+    end)
+  else
+    segments.map do |s|
+      "#{format_language(s.language, format)} (#{s.start_index}-#{s.end_index}): #{s.text}"
+    end.join("\n")
+  end
+end
+
+def process(text, detector, options)
+  case options[:mode]
+  when :detect
+    render_detect(detector.detect(text), options[:format])
+  when :confidences
+    render_confidences(detector.confidence_values(text), options[:format])
+  when :multiple
+    render_multiple(detector.detect_multiple(text), options[:format])
+  end
+end
+
+begin
+  detector_options = {}
+  detector_options[:languages] = options[:languages] if options[:languages]
+  detector = Lingua::Detector.new(**detector_options)
+
+  if options[:batch]
+    io = options[:batch] == '-' ? $stdin : File.open(options[:batch], 'r')
+    io.each_line do |line|
+      line = line.chomp
+      next if line.empty?
+
+      puts process(line, detector, options)
+    end
+    io.close unless io == $stdin
+  else
+    text = ARGV.empty? ? $stdin.read : ARGV.join(' ')
+    text = text.strip
+    if text.empty?
+      warn 'lingua: no input text'
+      exit 1
+    end
+    puts process(text, detector, options)
+  end
+rescue Lingua::UnknownLanguageError => e
+  warn "lingua: #{e.message}"
+  exit 1
+end
