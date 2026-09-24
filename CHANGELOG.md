@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix loading the native extension on macOS 26+ (`mis-aligned LINKEDIT string pool`) by disabling Cargo's implicit debuginfo stripping on macOS
+
 ## 0.6.0
 
 - Add `lingua` command-line tool for shell use (detection, confidences, multi-language, batch from file/stdin, JSON output)
