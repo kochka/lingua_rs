@@ -11,6 +11,11 @@ selection = with_config('lingua-languages', nil) || ENV.fetch('LINGUA_LANGUAGES'
 languages = selection.to_s.split(',').map { |lang| lang.strip.downcase }.reject(&:empty?)
 
 create_rust_makefile('lingua/lingua') do |r|
+  # Cargo strips debuginfo from release builds by default. On macOS 26+ Apple's
+  # strip leaves the LINKEDIT string pool misaligned and dyld refuses to load
+  # the bundle ("mis-aligned LINKEDIT string pool"), see rust-lang/rust#157750.
+  r.extra_rustflags << '-Cstrip=none' if RUBY_PLATFORM.include?('darwin')
+
   unless languages.empty?
     r.extra_cargo_args << '--no-default-features'
     r.features = languages
