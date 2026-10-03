@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.6.1
 
-- Fix loading the native extension on macOS 26+ (`mis-aligned LINKEDIT string pool`) by disabling Cargo's implicit debuginfo stripping on macOS
+- Fix loading the native extension on macOS 27+ (`mis-aligned LINKEDIT string pool`) by disabling Cargo's implicit debuginfo stripping on macOS
 
 ## 0.6.0
 
